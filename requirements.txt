@@ -4,3 +4,14 @@ joblib
 scikit-learn
 pandas
 numpy
+pandas
+numpy
+scikit-learn
+joblib
+xgboost
+optuna
+streamlit
+gunicorn
+flask
+requests
+matplotlib
