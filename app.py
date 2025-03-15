@@ -31,3 +31,13 @@ if st.button("Predict"):
 
  st.success(f"Predicted Soil Moisture: {prediction:.2f}")
     
+import streamlit as st
+
+st.set_page_config(
+    page_title="Soil Moisture Prediction",
+    page_icon="🌱",
+    layout="wide"
+)
+
+st.write("Welcome to the Soil Moisture Prediction App! 🚀")
+
