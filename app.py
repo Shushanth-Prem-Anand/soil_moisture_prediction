@@ -40,4 +40,40 @@ st.set_page_config(
 )
 
 st.write("Welcome to the Soil Moisture Prediction App! 🚀")
+import streamlit as st  # Keep this at the top!
+st.set_page_config(page_title="Soil Moisture Prediction", layout="wide")
+
+import joblib
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+
+# Load trained model
+model = joblib.load("stacking_regressor_soil_moisture.pkl")
+trained_columns = joblib.load("trained_features.pkl")
+
+# User Input Fields
+st.title("🌱 Soil Moisture Prediction App")
+temperature = st.number_input("Temperature (°C)", min_value=-10.0, max_value=50.0, step=0.1)
+humidity = st.number_input("Relative Humidity (%)", min_value=0.0, max_value=100.0, step=0.1)
+precipitation = st.number_input("Precipitation (mm)", min_value=0.0, max_value=500.0, step=0.1)
+
+# Predict Function
+def predict_soil_moisture():
+    input_data = np.array([[temperature, humidity, precipitation]])
+    input_df = pd.DataFrame(input_data, columns=["temperature_2m (°C)", "relative_humidity_2m (%)", "precipitation (mm)"])
+    input_df = input_df.reindex(columns=trained_columns, fill_value=0)
+    
+    # Standardize
+    scaler = StandardScaler()
+    input_scaled = scaler.fit_transform(input_df)
+
+    # Predict
+    prediction = model.predict(input_scaled)[0]
+    return prediction
+
+# Button for Prediction
+if st.button("Predict"):
+    result = predict_soil_moisture()
+    st.success(f"🌿 Predicted Soil Moisture: {result:.2f}")
 
