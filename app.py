@@ -12,8 +12,8 @@ st.set_page_config(
 )
 
 # ✅ Load trained model & trained feature names
-model = joblib.load("stacking_regressor_soil_moisture.pkl")
-trained_columns = joblib.load("trained_features.pkl")
+model = joblib.load("stacking_regressor_soil_moisture_v2.pkl")
+trained_columns = joblib.load("trained_features_v2.pkl")
 
 # 🌱 **App Title & Description**
 st.title("🌿 Soil Moisture Prediction App")
