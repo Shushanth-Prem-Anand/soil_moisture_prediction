@@ -20,16 +20,16 @@ st.title("🌿 Soil Moisture Prediction App")
 st.write("Welcome! Enter the weather parameters below to predict soil moisture levels.")
 
 # 🌡️ **User Input Fields (Ensure float conversion)**
-temperature = float(st.number_input("🌡️ Temperature (°C)", min_value=-10.0, max_value=50.0, step=0.1, value=20.0))
-humidity = float(st.number_input("💧 Relative Humidity (%)", min_value=0.0, max_value=100.0, step=0.1, value=50.0))
-precipitation = float(st.number_input("🌧️ Precipitation (mm)", min_value=0.0, max_value=500.0, step=0.1, value=0.0))
-wind_speed = float(st.number_input("💨 Wind Speed (m/s)", min_value=0.0, max_value=30.0, step=0.1, value=5.0))
-solar_radiation = float(st.number_input("☀️ Solar Radiation (W/m²)", min_value=0.0, max_value=1000.0, step=1.0, value=200.0))
+temperature = st.number_input("🌡️ Temperature (°C)", min_value=-10.0, max_value=50.0, step=0.1, value=20.0)
+humidity = st.number_input("💧 Relative Humidity (%)", min_value=0.0, max_value=100.0, step=0.1, value=50.0)
+precipitation = st.number_input("🌧️ Precipitation (mm)", min_value=0.0, max_value=500.0, step=0.1, value=0.0)
+wind_speed = st.number_input("💨 Wind Speed (m/s)", min_value=0.0, max_value=30.0, step=0.1, value=5.0)
+solar_radiation = st.number_input("☀️ Solar Radiation (W/m²)", min_value=0.0, max_value=1000.0, step=1.0, value=200.0)
 
 # **Prediction Function**
 def predict_soil_moisture(temp, hum, precip, wind, solar):
     input_data = np.array([[temp, hum, precip, wind, solar]])
-    
+
     # ✅ Ensure correct feature names & order
     input_df = pd.DataFrame(input_data, columns=[
         "temperature_2m (°C)", "relative_humidity_2m (%)", "precipitation (mm)",
@@ -42,8 +42,12 @@ def predict_soil_moisture(temp, hum, precip, wind, solar):
     # ✅ Ensure DataFrame has correct types (Avoid dtype error)
     input_df = input_df.astype(float)
 
+    # ✅ Apply StandardScaler (use the same scaler from training)
+    scaler = StandardScaler()
+    input_scaled = scaler.fit_transform(input_df)
+
     # ✅ Predict soil moisture
-    prediction = model.predict(input_df)[0]
+    prediction = model.predict(input_scaled)[0]
     return prediction
 
 # **Button for Prediction**
